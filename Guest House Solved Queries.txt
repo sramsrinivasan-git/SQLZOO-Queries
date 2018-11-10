@@ -28,3 +28,13 @@ where DATEADD(day, nights, booking_date) BETWEEN CAST('2016-11-14' as date) AND 
 GROUP BY DATEADD(day, nights, booking_date), LEFT(room_no,1)) s1
 PIVOT (SUM([Check-Out Count]) for Floor in ([1],[2],[3])) as PivotTable
 
+
+Problem Statement 13:
+=====================
+Free rooms? List the rooms that are free on the day 25th Nov 2016.
+
+Solution:
+=========
+select id from room where id not in(
+select booking.room_no from booking
+where booking_date<=cast('2016-11-25' as date) and dateadd(day, nights, booking_date)>cast('2016-11-25' as date))
