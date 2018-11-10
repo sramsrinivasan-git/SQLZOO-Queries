@@ -4,7 +4,6 @@ Coincidence. Have two guests with the same surname ever stayed in the hotel on t
 
 Solution:
 =========
-
 WITH sample as(
 select s2.last_name, s2.first_name f1 , s1.first_name f2, row_number() over (partition by s2.last_name order by s2.last_name) as row# from 
 (select booking_date , first_name, last_name, nights from booking b1 join guest g1 on b1.guest_id=g1.id) s1
@@ -15,7 +14,6 @@ OR
 (s2.booking_date BETWEEN s1.booking_date and DATEADD(day, s1.nights-1, s1.booking_date)))
 group by s2.last_name, s2.first_name, s1.first_name)
 select last_name, f2 as first_name, f1 as first_name from sample where row#=1
-
 
 
 Problem Satement 2 :
