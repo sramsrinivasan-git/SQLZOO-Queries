@@ -1,4 +1,4 @@
-Problem Satement 1 :
+Problem Satement 11 :
 ====================
 Coincidence. Have two guests with the same surname ever stayed in the hotel on the evening? Show the last name and both first names. Do not include duplicates.
 
@@ -16,7 +16,7 @@ group by s2.last_name, s2.first_name, s1.first_name)
 select last_name, f2 as first_name, f1 as first_name from sample where row#=1
 
 
-Problem Satement 2 :
+Problem Satement 12 :
 ====================
 Check out per floor. The first digit of the room number indicates the floor – e.g. room 201 is on the 2nd floor. For each day of the week beginning 2016-11-14 show how many rooms are being vacated that day by floor number. Show all days in the correct order.
 
