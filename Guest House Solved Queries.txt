@@ -15,3 +15,18 @@ OR
 (s2.booking_date BETWEEN s1.booking_date and DATEADD(day, s1.nights-1, s1.booking_date)))
 group by s2.last_name, s2.first_name, s1.first_name)
 select last_name, f2 as first_name, f1 as first_name from sample where row#=1
+
+
+
+Problem Satement 2 :
+====================
+Check out per floor. The first digit of the room number indicates the floor – e.g. room 201 is on the 2nd floor. For each day of the week beginning 2016-11-14 show how many rooms are being vacated that day by floor number. Show all days in the correct order.
+
+Solution:
+=========
+select [Check-Out Date] as i , [1] as [1st], [2] as [2nd] ,[3] as [3rd] from(
+select DATEADD(day, nights, booking_date) as [Check-Out Date], LEFT(room_no,1) as Floor, count(guest_id) as [Check-Out Count] from booking
+where DATEADD(day, nights, booking_date) BETWEEN CAST('2016-11-14' as date) AND DATEADD(day, 6, '2016-11-14')
+GROUP BY DATEADD(day, nights, booking_date), LEFT(room_no,1)) s1
+PIVOT (SUM([Check-Out Count]) for Floor in ([1],[2],[3])) as PivotTable
+
