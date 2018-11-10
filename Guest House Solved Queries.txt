@@ -1,0 +1,17 @@
+Problem Satement 1 :
+====================
+Coincidence. Have two guests with the same surname ever stayed in the hotel on the evening? Show the last name and both first names. Do not include duplicates.
+
+Solution:
+=========
+
+WITH sample as(
+select s2.last_name, s2.first_name f1 , s1.first_name f2, row_number() over (partition by s2.last_name order by s2.last_name) as row# from 
+(select booking_date , first_name, last_name, nights from booking b1 join guest g1 on b1.guest_id=g1.id) s1
+join
+(select booking_date , first_name, last_name, nights from booking b2 join guest g2 on b2.guest_id=g2.id) s2 on 
+s1.last_name=s2.last_name and s1.first_name<>s2.first_name AND ((s1.booking_date BETWEEN s2.booking_date and DATEADD(day, s2.nights-1, s2.booking_date)) 
+OR 
+(s2.booking_date BETWEEN s1.booking_date and DATEADD(day, s1.nights-1, s1.booking_date)))
+group by s2.last_name, s2.first_name, s1.first_name)
+select last_name, f2 as first_name, f1 as first_name from sample where row#=1
