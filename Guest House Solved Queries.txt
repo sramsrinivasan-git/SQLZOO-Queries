@@ -38,3 +38,20 @@ Solution:
 select id from room where id not in(
 select booking.room_no from booking
 where booking_date<=cast('2016-11-25' as date) and dateadd(day, nights, booking_date)>cast('2016-11-25' as date))
+
+
+Probelm Statement 14:
+=====================
+Single room for three nights required. A customer wants a single room for three consecutive nights. Find the first available date in December 2016.
+
+Solution:
+=========
+select top 1 s1.room_no, s1.check_out_date as check_in_date from(
+select room_no, booking_date, dateadd(day, nights, booking_date) as check_out_date ,ROW_NUMBER() over (partition by room_no order by booking_date) as row#
+from booking where room_type_requested='single' and datepart(month, booking_date)=12 and datepart(year, booking_date)=2016) s1 left join
+(select room_no, booking_date, dateadd(day, nights, booking_date) as check_out_date ,ROW_NUMBER() over (partition by room_no order by booking_date) as row#
+from booking where room_type_requested='single' and datepart(month, booking_date)=12 and datepart(year, booking_date)=2016
+)as s2 on s1.room_no=s2.room_no and s1.row#+1=s2.row# 
+where datediff(day, s1.check_out_date, s2.booking_date)>=3 OR datediff(day, s1.check_out_date, s2.booking_date) IS NULL
+order by s1.check_out_date
+
