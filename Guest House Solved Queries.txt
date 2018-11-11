@@ -40,7 +40,7 @@ select booking.room_no from booking
 where booking_date<=cast('2016-11-25' as date) and dateadd(day, nights, booking_date)>cast('2016-11-25' as date))
 
 
-Probelm Statement 14:
+Problem Statement 14:
 =====================
 Single room for three nights required. A customer wants a single room for three consecutive nights. Find the first available date in December 2016.
 
